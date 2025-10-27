@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ 检出仓库代码
-      - name: Checkout repo
+      # 1️⃣ 检出仓库
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ 安装 Python
+      # 2️⃣ 设置 Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install pytdx pandas matplotlib
 
-      # 4️⃣ 运行脚本（尝试两种路径）
+      # 4️⃣ 运行 daily_xg_21days.py
       - name: Run daily XG 21 days script
         run: |
           if [ -f "daily_xg_21days.py" ]; then
@@ -36,11 +36,13 @@ jobs:
               exit 1
           fi
 
-      # 5️⃣ 提交生成的 output 文件夹
+      # 5️⃣ 提交并推送 output 文件夹
       - name: Commit & Push outputs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add output/
           git commit -m "Update XG 21 days chart for $(date +'%Y-%m-%d')" || echo "No changes"
-          git push
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:main
