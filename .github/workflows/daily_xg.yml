@@ -2,7 +2,7 @@ name: Daily XG 21 Days Chart
 
 on:
   schedule:
-    - cron: "0 15 * * *"  # 每天 15:00 自动执行
+    - cron: "0 15 * * *"  # 每天 15:00 自动执行，可按需修改
   workflow_dispatch:       # 支持手动触发
 
 jobs:
