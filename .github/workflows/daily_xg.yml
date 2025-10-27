@@ -1,0 +1,32 @@
+name: Daily XG 21 Days Chart
+
+on:
+  schedule:
+    - cron: "15 15 * * *"  # 每天15:00执行
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pytdx pandas matplotlib
+
+      - name: Run daily XG 21 days script
+        run: python daily_xg_21days.py
+
+      - name: Commit & Push outputs
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add output/
+          git commit -m "Update XG 21 days chart for $(date +'%Y-%m-%d')" || echo "No changes"
+          git push
