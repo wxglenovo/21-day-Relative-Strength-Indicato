@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install pytdx pandas matplotlib
 
-      # 4️⃣ 运行 daily_xg_21days.py
+      # 4️⃣ 运行 daily_xg_21days.py（兼容根目录或 scripts/）
       - name: Run daily XG 21 days script
         run: |
           if [ -f "daily_xg_21days.py" ]; then
@@ -36,7 +36,7 @@ jobs:
               exit 1
           fi
 
-      # 5️⃣ 提交并推送 output 文件夹
+      # 5️⃣ 提交并 push output 文件夹（使用 PAT）
       - name: Commit & Push outputs
         env:
           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
