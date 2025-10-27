@@ -2,27 +2,41 @@ name: Daily XG 21 Days Chart
 
 on:
   schedule:
-    - cron: "15 15 * * *"  # 每天15:00执行
+    - cron: "0 15 * * *"  # 每天 15:00 自动执行
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
+      # 1️⃣ 检出仓库代码
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2️⃣ 安装 Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
+      # 3️⃣ 安装依赖
       - name: Install dependencies
         run: pip install pytdx pandas matplotlib
 
+      # 4️⃣ 运行脚本（尝试两种路径）
       - name: Run daily XG 21 days script
-        run: python daily_xg_21days.py
+        run: |
+          if [ -f "daily_xg_21days.py" ]; then
+              python daily_xg_21days.py
+          elif [ -f "scripts/daily_xg_21days.py" ]; then
+              python scripts/daily_xg_21days.py
+          else
+              echo "Error: daily_xg_21days.py not found!"
+              exit 1
+          fi
 
+      # 5️⃣ 提交生成的 output 文件夹
       - name: Commit & Push outputs
         run: |
           git config user.name "github-actions"
