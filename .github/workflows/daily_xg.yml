@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: pip install pytdx pandas matplotlib
 
-      # 4️⃣ 运行 daily_xg_21days.py（兼容根目录或 scripts/ 子目录）
+      # 4️⃣ 运行 daily_xg_21days.py
       - name: Run daily XG 21 days script
         run: |
           if [ -f "daily_xg_21days.py" ]; then
